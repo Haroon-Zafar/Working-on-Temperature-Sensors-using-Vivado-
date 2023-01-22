@@ -265,6 +265,10 @@ module rgb_to_pwm(RGBval, CLK, PWM_R, PWM_G, PWM_B);
 
 endmodule
 
+// The PWM generator is a circuit that generates a pulse width modulated signal from a duty cycle input.
+// The duty cycle input is a value between 0 and 255, which determines the ratio of the time that the PWM output is high to the time that the PWM output is low.
+// The duty cycle input is passed to the PWM generator, which uses it to generate a PWM signal with the appropriate duty cycle. 
+// This PWM signal can then be used to control the brightness of an LED or some other device that responds to a PWM signal.
 
     
     
