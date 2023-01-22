@@ -29,18 +29,30 @@ module segment_display(SW, CLK, SSEG_CA,SSEG_AN, LED);
 
 // Input and output ports of the module
 
+// SW is a 4 bit input used to select the value to be displayed on the 7 segment display
 input [3:0] SW;
+
+// CLK is a 1 bit input used to generate a clock from the input clock
 input CLK;
+
+
+// LED is a 4 bit output used to control the color of the LED
+output reg[3:0] LED;
+
+// OUTPUT PORTS
+// SSEG_CA is a 8 bit output used to display the value on the 7 segment display
 
 output reg[7:0] SSEG_CA;
 output reg[7:0] SSEG_AN;
 
-output reg[3:0] LED;
-
 
 // Instantiating the slow_clock module
 // slow clock module is used to generate a slow clock from the input clock
+// slow clock means 
 slow_clock S1 (CLK , Clk_Slow);
+
+
+// an "initial" block to set the initial value of SSEG_AN
 
 initial begin
 
@@ -54,7 +66,9 @@ end
 always @(posedge CLK)
 begin
 
+// The case statement has 16 cases, one for each possible value of SW, with each case setting SSEG_CA to a different 8-bit value to display a different number or letter on the 7-segment display.
 // case(SW) is used to display the value of the switch on the 7 segment display
+
 case(SW)
 
 // 4'b0000: SSEG_CA <= 8'b11000000; is used to display 0 on the 7 segment display
@@ -140,13 +154,17 @@ case(SSEG_AN)
 endcase
 end
 endmodule
+
+
+
+
 // slow_clock is used to generate a slow clock from the input clock
-// we are generating slow clock to display the value of the switch on the 7 segment display
-// WE HAVE TO CONVERT INTO 200KHZ CLOCK
+// The slow_clock module takes in an input clock (CLK) and generates a slower clock signal (Clk_Slow) as an output.
 
 module slow_clock(CLK,Clk_Slow);
 
 // Initialising the input and output ports
+
 input CLK;
 output Clk_Slow;
 reg[31:0] counter_out;
@@ -155,8 +173,11 @@ reg Clk_Slow;
 initial 
 begin
 
+// Using a counter (counter_out) that increments every time the input clock (CLK) rises.
+
 // counter_out<=32'h00000000; is used to initialise the counter
 counter_out<=32'h00000000;
+
 
 // Clk_Slow<=0; is used to initialise the slow clock
 Clk_Slow<=0;
@@ -167,8 +188,11 @@ always @(posedge CLK) begin
 // counter_out<=counter_out + 32'h00000001; is used to increment the counter
 counter_out<=counter_out + 32'h00000001;
 
+// The counter is then checked to see if its value is greater than a certain threshold value (32'h00F5E100)
 // if (counter_out> 32'h00F5E100) is used to check if the counter value is greater than 10000000
+
 if (counter_out> 32'h00F5E100)
+// If the counter value is greater than this threshold, the counter is reset to zero
 begin
 
 // counter_out<=32'h00000000; is used to reset the counter
@@ -188,15 +212,26 @@ endmodule
 
 
 
+// Pulse Width Modulation (PWM)
+// PWM is used to generate a square wave with a duty cycle that is controlled by the input DUTY_CYCLE
 
 module PWM_generator(CLK,DUTY_CYCLE, PWM_OUT);
+
+// The inputs to the module are the clock (CLK) and the duty cycle (DUTY_CYCLE)
 input CLK;
+
+// The output is the PWM signal (PWM_OUT)
 output PWM_OUT;
 
+// The module has a 4-bit counter (PWM_counter) that counts from 0 to 9
 reg[3:0] PWM_counter;
+
+// The duty cycle is set as a 4-bit output, and it is set to 5 as default
 output reg[3:0] DUTY_CYCLE=5;
 
 always @(posedge CLK) begin
+
+// The counter is incremented on each positive edge of the clock. When the counter reaches 9, it is reset to 0
     PWM_counter<=PWM_counter+1;
     if(PWM_counter>=9)
     PWM_counter<=0;
@@ -206,14 +241,23 @@ endmodule
 
 
 
-// RGB_to_PWM is used to convert the RGB value to PWM value
+// rgb_to_pwm is used to convert the RGB value to PWM value
+
 module rgb_to_pwm(RGBval, CLK, PWM_R, PWM_G, PWM_B);
+
+    // INPUTS TO THE MODULE
+    // 24-bit RGB value (RGBval), a clock signal (CLK)
     input [23:0] RGBval;
     input CLK;
+    
+    // Outputs are 3 PWM signals (PWM_R, PWM_G, PWM_B) for the red, green, and blue components of the RGB value, respectively
     output PWM_R;
     output PWM_G;
     output PWM_B;
 
+// It instantiates 3 instances of the "PWM_generator" module, one for each color component,
+// and connects the RGB value, clock signal, and PWM output to the appropriate inputs and outputs of the "PWM_generator" module. 
+// The RGB value is shifted right by 1 bit to divide the value by 2, so that it can be used as the duty cycle input to the PWM generator
 
     PWM_generator PWM_Rgen (CLK,RGBval[23:16]>>1, PWM_R);
     PWM_generator PWM_Ggen (CLK,RGBval[15:8]>>1, PWM_G);
