@@ -104,3 +104,7 @@ selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sourc
 selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, segment_display (segment_display.v)]", 1, true, false, false, false, false, true); // B (D, ck) - Double Click - Node
 typeControlKey(null, null, 'z');
 // [GUI Memory]: 68 MB (+1793kb) [00:02:35]
+// [GUI Memory]: 73 MB (+1139kb) [00:05:13]
+// [GUI Memory]: 78 MB (+1494kb) [00:10:51]
+// HMemoryUtils.trashcanNow. Engine heap size: 645 MB. GUI used memory: 40 MB. Current time: 1/19/23 8:59:36 PM PKT
+// [GUI Memory]: 84 MB (+2041kb) [00:27:07]
