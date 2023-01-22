@@ -140,8 +140,9 @@ case(SSEG_AN)
 endcase
 end
 endmodule
- // slow_clock is used to generate a slow clock from the input clock
+// slow_clock is used to generate a slow clock from the input clock
 // we are generating slow clock to display the value of the switch on the 7 segment display
+// WE HAVE TO CONVERT INTO 200KHZ CLOCK
 
 module slow_clock(CLK,Clk_Slow);
 
@@ -183,11 +184,11 @@ end
 endmodule
 
 
- 
 
 
 
- 
+
+
 module PWM_generator(CLK,DUTY_CYCLE, PWM_OUT);
 input CLK;
 output PWM_OUT;
@@ -205,8 +206,8 @@ endmodule
 
 
 
-
- module rgb_to_pwm(RGBval, CLK, PWM_R, PWM_G, PWM_B);
+// RGB_to_PWM is used to convert the RGB value to PWM value
+module rgb_to_pwm(RGBval, CLK, PWM_R, PWM_G, PWM_B);
     input [23:0] RGBval;
     input CLK;
     output PWM_R;
@@ -224,7 +225,7 @@ endmodule
     
     
 
- 
+
 //  module get_temp(SDA, SCL, CLK, temp);
 //     inout SDA;
 //     input SCL;
